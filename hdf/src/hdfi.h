@@ -75,6 +75,7 @@
 #define     DFMT_IA64           0x4441
 #define     DFMT_LINUX64        0x4441
 #define     DFMT_POWERPC64      0x1111
+#define     DFMT_LOONGARCH64    0x4441
 
 /* I/O library constants */
 #define UNIXUNBUFIO 1
@@ -668,6 +669,59 @@ typedef int               hdf_pint_t;   /* 4-byte pointer */
 
 #endif /* INTEL86 */
 #endif /* !(defined(__APPLE__)) */
+
+/*-----------------------------------------------------*/
+#if defined (__linux__) && defined (__loongarch64)
+
+#ifdef GOT_MACHINE
+If you get an error on this line more than one machine type has been defined.
+Please check your Makefile.
+#endif
+#define GOT_MACHINE 1
+
+#include <fcntl.h>
+#include <sys/types.h>      /* for unbuffered file I/O */
+#include <sys/stat.h>
+#include <unistd.h>
+#include <ctype.h>          /* for character macros */
+
+#define DF_MT             DFMT_LOONGARCH64
+
+typedef void              VOID;
+typedef void *            VOIDP;
+typedef char *            _fcd;
+typedef char              char8;
+typedef unsigned char     uchar8;
+typedef signed char       int8;
+typedef unsigned char     uint8;
+typedef short int         int16;
+typedef unsigned short int uint16;
+typedef int               int32;
+typedef unsigned int      uint32;
+typedef int               intn;
+typedef unsigned int      uintn;
+typedef float             float32;
+typedef double            float64;
+typedef int               intf;     /* size of INTEGERs in Fortran compiler */
+typedef long              hdf_pint_t;   /* an integer the same size as a pointer */
+#define FNAME_POST_UNDERSCORE
+#define _fcdtocp(desc) (desc)
+#define FILELIB UNIXBUFIO
+
+#ifndef BIG_LONGS
+#define BIG_LONGS
+#endif
+
+/* JPEG #define's - Look in the JPEG docs before changing - (Q) */
+
+/* Determine the memory manager we are going to use. Valid values are: */
+/*  MEM_DOS, MEM_ANSI, MEM_NAME, MEM_NOBS.  See the JPEG docs for details on */
+/*  what each does */
+#define JMEMSYS         MEM_ANSI
+#define HAVE_STDC
+#define INCLUDES_ARE_ANSI
+
+#endif /* Linux/loongarch64 */
 
 /*-----------------------------------------------------*/
 #if defined(NEXT) || defined(NeXT)
